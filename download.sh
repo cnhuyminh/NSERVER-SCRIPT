@@ -26,7 +26,7 @@ mkdir "APPS"
 
 cd "APPS"
 sourceList=( "NCDN" "NDEV" "NRESTAURANT" )
-for item in "${"$"}{sourceList[@]}"; do
+for item in "${sourceList[@]}"; do
     git clone --depth 1 "https://$username:$token@github.com/$username/$item.git"
 done
 
