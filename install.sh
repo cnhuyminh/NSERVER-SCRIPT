@@ -165,6 +165,11 @@ echo "{\"name\":\"ndev\",\"version\":\"1.0.0\",\"private\":true,\"scripts\":{},\
 npm install
 cd "$curDir"
 
+# ok
+sudo systemctl start postgresql-14
+sudo systemctl start redis
+sleep 10
+
 # config
 PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname=postgres --username=$pgUsername -c 'CREATE DATABASE "db-ndev"'
 PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname="db-ndev" --username=$pgUsername -c "CREATE EXTENSION IF NOT EXISTS ltree"
@@ -217,10 +222,6 @@ sudo firewall-cmd --reload
 cd "server"
 npm install
 
-# ok
-sudo systemctl start postgresql-14
-sudo systemctl start redis
-sleep 10
 # sudo systemctl start vnvnweb
 
 echo "=================== INSTALL COMPLETE "==================="
