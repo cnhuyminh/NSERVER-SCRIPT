@@ -224,4 +224,4 @@ npm install
 
 # sudo systemctl start vnvnweb
 
-echo "=================== INSTALL COMPLETE "==================="
+echo "=================== INSTALL COMPLETE ==================="
