@@ -1,4 +1,5 @@
 #!/bin/bash
+curDir="$PWD"
 echo "Enter username: "
 read username < /dev/tty
 
@@ -39,6 +40,6 @@ for item in "${sourceList[@]}"; do
     cd ..
 done
 
-cd ..
-cd ..
+cd "$curDir"
+
 echo "COMPLETE DOWNLOAD SOURCES"

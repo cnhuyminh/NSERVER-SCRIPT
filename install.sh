@@ -221,7 +221,7 @@ sudo firewall-cmd --reload
 # install npm
 cd "server"
 npm install
-
+cd "$curDir"
 # sudo systemctl start vnvnweb
 
 echo "=================== INSTALL COMPLETE ==================="
