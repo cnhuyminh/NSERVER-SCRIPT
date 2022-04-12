@@ -19,6 +19,7 @@ cd "../../../.."
 cd "APPS"
 for item in "${sourceList[@]}"; do
     cd $item
+	rm -rf "dist"
 	npm run build
 	cd ..
 done
