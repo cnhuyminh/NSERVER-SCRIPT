@@ -1,6 +1,12 @@
 #!/bin/bash
 sourceList=( "NCDN" "NDEV" "NRESTAURANT" )
 
+sudo yum -y install mesa-libGL libXtst gcc git git-lfs
+
+# install nodejs
+echo "Install NodeJS 16"
+dnf module install nodejs:16 -y
+
 cd "sources"
 
 rm -rf "BUILD"
@@ -10,6 +16,8 @@ mkdir "BUILD"
 mkdir "RELEASE"
 
 cd "NSERVER"
+mkdir "declare"
+npm install
 npm run build
 cd "dist/core/debug"
 zip -r "../../../../RELEASE/NSERVER.zip" *
@@ -19,6 +27,7 @@ cd "../../../.."
 cd "APPS"
 for item in "${sourceList[@]}"; do
     cd $item
+	npm install
 	rm -rf "dist"
 	npm run build
 	cd ..
