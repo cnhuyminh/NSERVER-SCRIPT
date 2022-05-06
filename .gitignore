@@ -1,0 +1,13 @@
+node_modules/
+/log/
+/ssl/
+/storage/
+/dist/
+/declare/
+/tmp/
+/data/
+/sources/
+/config.lock.lock/
+package-lock.json
+config.lock
+.DS_STORE

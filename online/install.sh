@@ -92,12 +92,13 @@ then
 
 	# remove postgres data directory
 	rm -rf "$installDir"
-	mkdir "$installDir"
+	mkdir -p "$installDir"
 
 	chown -R postgres:postgres "$installDir"
 	chmod -R u+rwx,g-rwx,o-rwx "$installDir"
 
 	rm -rf "/var/lib/pgsql/14/data"
+	mkdir -p "/var/lib/pgsql/14/data"
 	ln -s "$installDir" "/var/lib/pgsql/14/data"
 
 	chown -R postgres:postgres "/var/lib/pgsql/14/data"
@@ -133,7 +134,7 @@ then
 fi
 
 # storagePath
-mkdir "$curDir/server/storage"
+mkdir -p "$curDir/server/storage"
 
 # giai nen
 unzip -o "$curDir/sources/NSERVER/installer.zip" -d "server"
@@ -175,13 +176,14 @@ PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname=postgres --
 PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname="db-ndev" --username=$pgUsername -c "CREATE EXTENSION IF NOT EXISTS ltree"
 PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname="db-ndev" --username=$pgUsername -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
 
-PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname=postgres --username=$pgUsername -c 'CREATE DATABASE "db-shared-tmp"'
-PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname="db-shared-tmp" --username=$pgUsername -c "CREATE EXTENSION IF NOT EXISTS ltree"
-PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname="db-shared-tmp" --username=$pgUsername -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
+PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname=postgres --username=$pgUsername -c "CREATE USER \"db-shared\" LOGIN PASSWORD 'db-shared'"
+PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname=postgres --username=$pgUsername -c 'CREATE DATABASE "db-shared" owner "db-shared"'
+PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname="db-shared" --username=$pgUsername -c "CREATE EXTENSION IF NOT EXISTS ltree"
+PGPASSWORD="$pgPassword" psql --host=$pgHost --port=$pgPort --dbname="db-shared" --username=$pgUsername -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
 
 echo "{\"apps\":{\"ndev\":{\"source\":\"ndev\",\"binds\":[\"$webDomain\"],\"domain\":{\"server\":\"$webDomain\"},\"connections\":{\"default\":{\"username\":\"$pgUsername\",\"password\":\"$pgPassword\",\"database\":\"db-ndev\"}},\"enabled\":true}}}" > "server/config.apps.json"
 
-echo "{\"defaults\":{\"connections\":{\"default\":{\"dialect\":\"postgres\"},\"shared\":{\"dialect\":\"postgres\",\"username\":\"$pgUsername\",\"password\":\"$pgPassword\",\"database\":\"db-shared-tmp\"}},\"redis\":{\"socket\":{\"host\":\"$redisHost\",\"port\":$redisPort},\"username\":\"$redisUsername\",\"password\":\"$redisPassword\"}},\"postgres\":{\"username\":\"$pgUsername\",\"password\":\"$pgPassword\"}}" > "server/config.db.json"
+echo "{\"defaults\":{\"connections\":{\"default\":{\"dialect\":\"postgres\"},\"shared\":{\"dialect\":\"postgres\",\"username\":\"db-shared\",\"password\":\"db-shared\",\"database\":\"db-shared\"}},\"redis\":{\"socket\":{\"host\":\"$redisHost\",\"port\":$redisPort},\"username\":\"$redisUsername\",\"password\":\"$redisPassword\",\"sentinel\":\"\"}},\"postgres\":{\"username\":\"$pgUsername\",\"password\":\"$pgPassword\"}}" > "server/config.db.json"
 
 echo "{\"defaults\":{\"timezone\":\"America/Los_Angeles\",\"clientSecret\":\"OGRSU1FqVkk3S3NDeVdSeVNCMEo3STZvclFFaVdGYkk=\",\"cdnKey\":\"7zHJA5DawE3DpgmK3CfvkJ7dK2JEcGj9\",\"domain\":{\"cdn\":\"$webDomain\"},\"smtp\":{},\"connections\":{\"default\":{\"host\":\"$pgHost\",\"port\":$pgPort},\"shared\":{\"host\":\"$pgHost\",\"port\":$pgPort}},\"redis\":{\"socket\":{\"host\":\"$redisHost\",\"port\":$redisPort},\"username\":\"$redisUsername\",\"password\":\"$redisPassword\"},\"localesInfo\":{\"vi\":{\"code\":\"vi\",\"codes\":[\"vi\",\"vi-VN\"],\"file\":\"default\",\"name\":\"Tiếng Việt (US)\",\"icon\":\"VI\",\"format\":\"en-US\"}}},\"paths\":{\"core\":\"dist/core/debug\"},\"apps\":{\"ndev\":{\"origin\":\"*\",\"keys\":{\"7zHJA5DawE3DpgmK3CfvkJ7dK2JEcGj9\":\"*\"},\"plugins\":[\"moment\",\"core\",\"adminui\",\"cdn\"]}},\"postgres\":{\"username\":\"$pgUsername\",\"password\":\"$pgPassword\"},\"ddns\":{},\"etag\":\"0000\",\"packages\":{}}" > "server/config.defaults.json"
 
