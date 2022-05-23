@@ -109,7 +109,7 @@ then
 
 	# init postgres
 	echo "Init Postgres"
-	sudo -u postgres /usr/pgsql-14/bin/initdb --username="$pgUsername" --pwfile="$curDir/tmp/pass.txt" --locale=en_US.UTF-8 --encoding=utf8 --pgdata="/var/lib/pgsql/14/data"
+	sudo -u postgres /usr/pgsql-14/bin/initdb --username="$pgUsername" --pwfile="$curDir/tmp/pass.txt" --locale=en_US.UTF-8 --encoding=utf8 --pgdata="$installDir"
 	rm -rf "$curDir/tmp/pass.txt"
 
 	sudo systemctl enable postgresql-14
