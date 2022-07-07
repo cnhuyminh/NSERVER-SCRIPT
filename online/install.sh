@@ -73,6 +73,7 @@ mkdir "server"
 chmod -R u+rwx,g-rwx,o-rwx "server"
 
 # tao thu muc tmp 
+rm -rf "tmp"
 mkdir "tmp"
 
 sudo systemctl stop postgresql-14
@@ -219,6 +220,9 @@ sudo systemctl enable vnvnweb
 sudo firewall-cmd --zone=public --permanent --add-service=http
 sudo firewall-cmd --zone=public --permanent --add-service=https
 sudo firewall-cmd --reload
+
+# xoa thu muc tmp 
+rm -rf "tmp"
 
 # install npm
 cd "server"
