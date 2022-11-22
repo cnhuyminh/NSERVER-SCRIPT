@@ -4,8 +4,9 @@ sourceList=( "NCDN" "NDEV" "NRESTAURANT" )
 sudo yum -y install mesa-libGL libXtst gcc git git-lfs
 
 # install nodejs
-echo "Install NodeJS 16"
-dnf module install nodejs:16 -y
+echo "Install NodeJS 18"
+curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo -E bash -
+dnf module install nodejs:18 -y
 
 cd "sources"
 

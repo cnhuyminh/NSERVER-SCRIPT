@@ -99,7 +99,6 @@ then
 	chmod -R u+rwx,g-rwx,o-rwx "$installDir"
 
 	rm -rf "/var/lib/pgsql/14/data"
-	mkdir -p "/var/lib/pgsql/14/data"
 	ln -s "$installDir" "/var/lib/pgsql/14/data"
 
 	chown -R postgres:postgres "/var/lib/pgsql/14/data"
