@@ -7,6 +7,7 @@ echo "Enter token key: "
 read token < /dev/tty
 
 sudo yum -y install mesa-libGL libXtst gcc git git-lfs
+sudo yum -y install nss at-spi2-atk cups-libs libxkbcommon libXcomposite libXdamage libXrandr libgbm pango pulseaudio
 
 # install nodejs
 echo "Install NodeJS 18"
